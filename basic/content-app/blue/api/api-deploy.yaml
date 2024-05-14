@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-api-deployment-blue
+  labels:
+    app: content-api
+    env: blue
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: content-api
+  template:
+    metadata:
+      labels:
+        app: content-api
+        env: blue
+    spec:
+      containers:
+      - name: content-api
+        image: team2dnbacr.azurecr.io/fabmedicalapi:0.0.1
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"       
+        ports:
+        - containerPort: 3001

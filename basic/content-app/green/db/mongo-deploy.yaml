@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-deployment-green
+  labels:
+    app: mongo
+    env: green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+      env: green
+  template:
+    metadata:
+      labels:
+        app: mongo
+        env: green
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:latest
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"
+        volumeMounts:
+          - mountPath: /data/db
+            name: azuredisk-db
+          - mountPath: /data/configdb
+            name: azuredisk-configdb
+        ports:
+        - containerPort: 27017
+      volumes:
+        - name: azuredisk-db
+          persistentVolumeClaim:
+            claimName: azuredisk-db-pvc
+        - name: azuredisk-configdb
+          persistentVolumeClaim:
+            claimName: azuredisk-configdb-pvc

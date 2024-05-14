@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-web-deployment-blue
+  labels:
+    app: content-web
+    env: blue
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: content-web
+      env: blue
+  template:
+    metadata:
+      labels:
+        app: content-web
+        env: blue
+    spec:
+      containers:
+      - name: content-web
+        image: team2dnbacr.azurecr.io/fabmedicalweb:0.0.1
+        env:
+        - name: CONTENT_API_URL
+          value: http://content-api-svc-blue:3001
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"       
+        ports:
+        - containerPort: 3000

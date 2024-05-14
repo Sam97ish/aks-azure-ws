@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-api-deployment-green
+  labels:
+    app: content-api
+    env: green
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: content-api
+  template:
+    metadata:
+      labels:
+        app: content-api
+        env: green
+    spec:
+      containers:
+      - name: content-api
+        image: team2dnbacr.azurecr.io/hussam-content-api-v2:latest
+        env:
+          - name: MONGODB_CONNECTION
+            value: mongodb://mongo-svc-green:27017/contentdb
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"       
+        ports:
+        - containerPort: 3001

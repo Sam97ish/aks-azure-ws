@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: content-web-svc
+  labels:
+    app: content-web-svc
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: hussamcontentapp
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: content-web
+    env: green
